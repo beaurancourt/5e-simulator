@@ -15,8 +15,7 @@
   <body>
     <div class="wrapper">
       <div id="app">
-        {{ message }}
-        <select v-model="selected">
+        <select v-model="target">
           <option>1</option>
           <option>2</option>
           <option>3</option>
@@ -38,7 +37,16 @@
           <option>19</option>
           <option>20</option>
         </select>
-        <span>Selected: {{ selected }}</span>
+        <input type="text" v-model="damage" placeholder="1d8+6">
+        <input type="text" v-model="health" placeholder="25">
+        <button v-on:click="calculate">Calculate!</button>
+        Turns to Kill with:
+        <ul>
+          <li>GWM and Advantage: {{gwmAdvantage}}</li>
+          <li>No GWM and Advantage: {{noGwmAdvantage}}</li>
+          <li>GWM and No Advantage: {{gwmNoAdvantage}}</li>
+          <li>No GWM and No Advantage: {{noGwmNoAdvantage}}</li>
+        </ul>
       </div>
     </div>
     <script src="javascripts/scale.fix.js"></script>
