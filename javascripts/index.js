@@ -1,10 +1,10 @@
 new Vue({
   el: '#app',
   data: {
-    gwmAdvantage: '',
-    noGwmAdvantage: '',
-    gwmNoAdvantage: '',
-    noGwmNoAdvantage: '',
+    gwmAdvantage: '?',
+    noGwmAdvantage: '?',
+    gwmNoAdvantage: '?',
+    noGwmNoAdvantage: '?',
     target: '8',
     damage: '1d8+6',
     health: '25'
@@ -13,10 +13,10 @@ new Vue({
     calculate: function () {
       var target = parseInt(this.target);
       var health = parseInt(this.health);
-      this.gwmAdvantage = optimize(health, this.damage, true, target, true);
-      this.noGwmAdvantage = optimize(health, this.damage, false, target, true);
-      this.gwmNoAdvantage = optimize(health, this.damage, true, target, false);
-      this.noGwmNoAdvantage = optimize(health, this.damage, false, target, false);
+      this.gwmAdvantage = optimize(health, this.damage, true, target, true).toFixed(2);
+      this.noGwmAdvantage = optimize(health, this.damage, false, target, true).toFixed(2);
+      this.gwmNoAdvantage = optimize(health, this.damage, true, target, false).toFixed(2);
+      this.noGwmNoAdvantage = optimize(health, this.damage, false, target, false).toFixed(2);
     }
   }
 });

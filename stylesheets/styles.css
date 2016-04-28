@@ -322,3 +322,37 @@ footer {
     color:#444;
   }
 }
+
+#calculate {
+  display: block;
+  background-color: #4CAF50;
+  text-decoration: none;
+  text-align: center;
+  color: white;
+  font-size: 32px;
+  border: none;
+  padding: 10px 10px 10px 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#app {
+  font-size: 200%;
+}
+
+option {
+  font-size: 200%;
+}
+
+input {
+  border: none;
+  font-size: 28px;
+  color: blue;
+  padding-left: 5px;
+}
+
+select {
+  border: none;
+  font-size: 28px;
+  color: blue;
+}

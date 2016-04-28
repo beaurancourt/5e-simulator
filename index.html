@@ -14,39 +14,62 @@
   </head>
   <body>
     <div class="wrapper">
+      <h1>5e Turns to Kill Calculator</h1>
       <div id="app">
-        <select v-model="target">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-          <option>6</option>
-          <option>7</option>
-          <option selected>8</option>
-          <option>9</option>
-          <option>10</option>
-          <option>11</option>
-          <option>12</option>
-          <option>13</option>
-          <option>14</option>
-          <option>15</option>
-          <option>16</option>
-          <option>17</option>
-          <option>18</option>
-          <option>19</option>
-          <option>20</option>
-        </select>
-        <input type="text" v-model="damage" placeholder="1d8+6">
-        <input type="text" v-model="health" placeholder="25">
-        <button v-on:click="calculate">Calculate!</button>
+        <div>
+          <div>
+            <label for="target">Minimum Roll to Hit:</label>
+            <select class="input" id="target" v-model="target">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option selected>8</option>
+              <option>9</option>
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+              <option>13</option>
+              <option>14</option>
+              <option>15</option>
+              <option>16</option>
+              <option>17</option>
+              <option>18</option>
+              <option>19</option>
+              <option>20</option>
+            </select>
+          </div>
+          <div>
+            <label for="damage">Damage:</label>
+            <input clas="input" id="damage" type="text" v-model="damage" placeholder="1d8+6">
+          </div>
+          <div>
+            <label for="health">Enemy Health:</label>
+            <input class="input" id="health" type="text" v-model="health" placeholder="25">
+          </div>
+        </div>
+        <button id="calculate" v-on:click="calculate">Calculate!</button>
         Turns to Kill with:
-        <ul>
-          <li>GWM and Advantage: {{gwmAdvantage}}</li>
-          <li>No GWM and Advantage: {{noGwmAdvantage}}</li>
-          <li>GWM and No Advantage: {{gwmNoAdvantage}}</li>
-          <li>No GWM and No Advantage: {{noGwmNoAdvantage}}</li>
-        </ul>
+        <table>
+          <tr>
+            <td/>
+            <td>Advantage</td>
+            <td>No Advantage</td>
+          </tr>
+          <tr>
+            <td>GWM</td>
+            <td>{{gwmAdvantage}}</td>
+            <td>{{gwmNoAdvantage}}</td>
+          </tr>
+          <tr>
+            <td>No GWM</td>
+            <td>{{noGwmAdvantage}}</td>
+            <td>{{noGwmNoAdvantage}}</td>
+          </tr>
+        </table>
       </div>
     </div>
     <script src="javascripts/scale.fix.js"></script>
