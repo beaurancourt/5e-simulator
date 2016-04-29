@@ -5,6 +5,10 @@ new Vue({
     noGwmAdvantage: '?',
     gwmNoAdvantage: '?',
     noGwmNoAdvantage: '?',
+    alwaysGwmAdvantage: '?',
+    alwaysGwmNoAdvantage: '?',
+    neverGwmAdvantage: '?',
+    neverGwmNoAdvantage: '?',
     target: '8',
     damage: '1d8+6',
     health: '25'
@@ -17,6 +21,10 @@ new Vue({
       this.noGwmAdvantage = optimize(health, this.damage, false, target, true).toFixed(2);
       this.gwmNoAdvantage = optimize(health, this.damage, true, target, false).toFixed(2);
       this.noGwmNoAdvantage = optimize(health, this.damage, false, target, false).toFixed(2);
+      this.alwaysGwmAdvantage = alwaysGWM(health, this.damage, target, true).toFixed(2);
+      this.alwaysGwmNoAdvantage = alwaysGWM(health, this.damage, target, false).toFixed(2);
+      this.neverGwmAdvantage = neverGWM(health, this.damage, target, true).toFixed(2);
+      this.neverGwmNoAdvantage = neverGWM(health, this.damage, target, false).toFixed(2);
     }
   }
 });
@@ -96,7 +104,7 @@ function chanceToHit(target, advantage) {
       4: 0.978,
       3: 0.990,
       2: 0.998,
-      1: 1.000}[target];
+      1: 1.000}[target] || 0;
   } else {
     return (21 - target) / 20;
   }
@@ -108,18 +116,43 @@ function optimize(health, damage, gwm, target, advantage) {
   }
   var result;
   var newTarget = gwm ? target + 5 : target;
-  if (newTarget > 20) {
-    result = 99999;
-  } else {
-    var hitChance = chanceToHit(newTarget, advantage);
-    result = 1 / (hitChance);
-    var pdf = rollDamage(gwm ? damage + "+10" : damage);
-    for (hit in pdf) {
-      result += hitChance * pdf[hit] * Math.min(
-        optimize(health - hit, damage, true, target, advantage), 
-        optimize(health - hit, damage, false, target, advantage)
-      );
-    }
+  var hitChance = Math.max(chanceToHit(newTarget, advantage), .05);
+  result = 1 / (hitChance);
+  var pdf = rollDamage(gwm ? damage + "+10" : damage);
+  for (hit in pdf) {
+    result += hitChance * pdf[hit] * Math.min(
+      optimize(health - hit, damage, true, target, advantage), 
+      optimize(health - hit, damage, false, target, advantage)
+    );
+  }
+  return result;
+}
+
+function neverGWM(health, damage, target, advantage) {
+  if (health <= 0) {
+    return 0;
+  }
+  var result;
+  var hitChance = Math.max(chanceToHit(target, advantage), .05);
+  result = 1 / (hitChance);
+  var pdf = rollDamage(damage);
+  for (hit in pdf) {
+    result += hitChance * pdf[hit] * neverGWM(health - hit, damage, target, advantage);
+  }
+  return result;
+}
+
+function alwaysGWM(health, damage, target, advantage) {
+  if (health <= 0) {
+    return 0;
+  }
+  var result;
+  var newTarget = target + 5
+  var hitChance = Math.max(chanceToHit(newTarget, advantage), .05);
+  result = 1 / (hitChance);
+  var pdf = rollDamage(damage + "+10");
+  for (hit in pdf) {
+    result += hitChance * pdf[hit] * alwaysGWM(health - hit, damage, target, advantage);
   }
   return result;
 }
